@@ -17,6 +17,9 @@ out_fname = '%s/gene_annotations.tsv'%(matrices_dir)
 # open and parse the matrix
 with gzip.open(matrix_fname, 'r') as fin, open(out_fname, 'w') as fout :
 
+    # print header of output file
+    fout.write("gene_id\tgene_symbol\n")
+
     # read the file line by line
     for lineno, line in enumerate(fin) :
 
@@ -33,4 +36,5 @@ with gzip.open(matrix_fname, 'r') as fin, open(out_fname, 'w') as fout :
                 gene_name = release.gene_by_id(gene_id.split('.')[0]).gene_name
             except ValueError :
                 print "Warning: gene %s not found"%(gene_id)
+                gene_name = "Unknown"
             fout.write('%s\t%s\n'%(gene_id, gene_name))
