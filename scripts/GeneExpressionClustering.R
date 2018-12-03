@@ -1,9 +1,4 @@
-# load the WGCNA library and allow multithreading
-suppressMessages(library(WGCNA))
-suppressMessages(allowWGCNAThreads())
-suppressMessages(library(biomaRt))
-
-PrepareDataForClustering <- function(X, sampleSheet, ngenes, cut, plot = TRUE) {
+MostVariableGenesNaive <- function(X, ngenes, sampleSheet) {
     # select the group of genes from the untreated J-Lat cells
     jlat.untreated <- X[, sampleSheet$status == 'nontreated']
 
@@ -15,11 +10,16 @@ PrepareDataForClustering <- function(X, sampleSheet, ngenes, cut, plot = TRUE) {
 
     # get the names of the genes that have the greatest biological variation, 
     selected <- order(gene.variability, decreasing = TRUE)[1:ngenes]
-    most.variable.genes <- rownames(jlat.untreated[selected, ])
+    rownames(jlat.untreated[selected, ])
+}
+
+PrepareDataForClustering <- function(X, sampleSheet, genes, cut) {
+    # select the group of genes from the untreated J-Lat cells
+    jlat.untreated <- X[, sampleSheet$status == 'nontreated']
 
     # extract a data frame with the values of the expressions for each of the genes
-    # with the highest biological variation
-    datExpr0 <- as.data.frame(t(jlat.untreated[most.variable.genes, ]))
+    # that the user selected
+    datExpr0 <- as.data.frame(t(jlat.untreated[genes, ]))
 
     # do quality control
     gsg <- goodSamplesGenes(datExpr0, verbose = 3);
@@ -30,25 +30,22 @@ PrepareDataForClustering <- function(X, sampleSheet, ngenes, cut, plot = TRUE) {
     # extract the hierarchical clustering tree of the samples
     sampleTree <- hclust(dist(datExpr0), method = "average");
 
-    # plot results if user wishes
-    if (plot) {
-      # plot size
-      options(repr.plot.width = 10, repr.plot.height = 6)
+    # plot size
+    options(repr.plot.width = 10, repr.plot.height = 6)
 
-      # detect outliers
-      par(cex = 0.6);
-      par(mar = c(0,4,2,0))
-      plot(sampleTree,
-	   main     = "Sample clustering to detect outliers",
-	   sub      = "",
-	   xlab     = "",
-	   cex.lab  = 1.5,
-	   cex.axis = 1.5,
-	   cex.main = 2)
+    # detect outliers
+    par(cex = 0.6);
+    par(mar = c(0,4,2,0))
+    plot(sampleTree,
+         main     = "Sample clustering to detect outliers",
+         sub      = "",
+         xlab     = "",
+         cex.lab  = 1.5,
+         cex.axis = 1.5,
+         cex.main = 2)
 
-      # Plot a line to show the cut
-      abline(h = cut, col = "red");
-    }
+    # Plot a line to show the cut
+    abline(h = cut, col = "red");
 
     # cut the tree according to the user-supplied `cut` parameter, and then 
     # clust 1 will contains the samples we want to keep.
