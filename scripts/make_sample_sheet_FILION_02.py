@@ -15,6 +15,7 @@ plates = {'P1' : 'P2769',
 # iterate on both at the same time, and make some horrendous parsing based on
 # the specific characteristics of what is written in the sample sheet
 with open("../data/matrices/samplesheet_2.tsv", "w") as f :
+    f.write("cellnames\tlabel\n")
     for index, sample_name in zip(multiplex_indices, sample_names) :
         plate_id = sample_name[:2]
         name = plates[plate_id] + "_" + index[:9]
