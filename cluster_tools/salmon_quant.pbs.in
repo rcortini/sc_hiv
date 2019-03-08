@@ -15,7 +15,7 @@ sample_id="@SAMPLE_ID@"
 # build file names
 scripts_dir="$sc_hiv_home/scripts"
 salmon="$sc_hiv_home/bin/salmon"
-reference_genome_dir="$sc_hiv_home/reference_genome"
+reference_genome_dir="$sc_hiv_home/data/reference_genome"
 salmon_index="$reference_genome_dir/transcripts_index+HIV"
 gtf="$reference_genome_dir/Homo_sapiens.GRCh38.cdna.all+HIV.simplegtf"
 data_dir="$sc_hiv_home/data/fastqs"
