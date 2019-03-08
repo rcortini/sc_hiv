@@ -18,9 +18,9 @@ salmon="$sc_hiv_home/bin/salmon"
 reference_genome_dir="$sc_hiv_home/data/reference_genome"
 salmon_index="$reference_genome_dir/transcripts_index+HIV"
 gtf="$reference_genome_dir/Homo_sapiens.GRCh38.cdna.all+HIV.simplegtf"
-data_dir="$sc_hiv_home/data/fastqs"
-fq_1="$data_dir/$sample_id"_1.fastq.gz
-fq_2="$data_dir/$sample_id"_2.fastq.gz
+data_dir="$sc_hiv_home/data"
+fq_1="$data_dir/fastqs/$sample_id"_1.fastq.gz
+fq_2="$data_dir/fastqs/$sample_id"_2.fastq.gz
 out_dir="$data_dir/fastqs/postprocess/$sample_id"
 
 $salmon quant -i $salmon_index -l A -1 $fq_1 -2 $fq_2 -p 4 -g $gtf --seqBias \
