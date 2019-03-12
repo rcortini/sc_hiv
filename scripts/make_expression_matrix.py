@@ -46,5 +46,6 @@ df.to_csv("%s/exprMatrix.tsv"%(matrices_dir), sep="\t", index_label='Name')
 
 # now write the sample sheet
 with open('%s/sampleSheet.tsv'%(metadata_dir), 'w') as f :
+    f.write("name label")
     for name in list(mapping.keys()) :
         f.write('%s\t%s\n'%(mapping[name]['name'], mapping[name]['sample']))
